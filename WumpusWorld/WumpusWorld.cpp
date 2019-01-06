@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-#include <gl/glut.h>
+#include <GLUT/glut.h>
 #include <math.h>
-
+#include <unistd.h>
 #define UP 1
 #define DOWN 2
 #define LEFT 3 
@@ -90,11 +90,11 @@ void Resize (int w, int h)
 
 void Write(char *string)
 {
-    while(*string) glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, *string++);
+    while(*string) glutStrokeCharacter(GLUT_BITMAP_HELVETICA_18, *string++);
 }
 void BigWrite(char *string)
 {
-    while(*string) glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *string++);
+    while(*string) glutStrokeCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *string++);
 }
 //This Function will rotate the object according to the Angles
 void ManipulateViewAngle() 
@@ -123,26 +123,29 @@ void Reset(){
 void WelcomeScreen()
 {
 
+  char title[] = "WUMPUS WORLD";
+  char r1[] = "Select 'r' to read rules of the game.";
+  char r2[] = "Select 'p' to play";
+  char r3[] = "Select 'Esc' button to exit at any time.";
+  char r4[] = "Done By :";
+  char r5[] = "MEGHNA NATRAJ";
+
     glTranslatef (-60.0, 40.0, zoom);
 	 glColor3f(0.30,0.30,1.00);
     glRasterPos2f(-20, 50);
-    BigWrite("WUMPUS WORLD");
+    BigWrite(title);
     glColor3f(0.36,0.25,0.20);
     glRasterPos2f(0, 0);
-	 Write("Select 'r' to read rules of the game.");
+	 Write(r1);
 	 glRasterPos2f(0, -20);
-     Write("Select 'p' to play");
+     Write(r2);
 	 glRasterPos2f(0, -40);
-     Write("Select 'Esc' button to exit at any time.");
+     Write(r3);
 	glColor3f(0.62352,0.372549,0.623529);
 	 glRasterPos2f(60, -80);
-	  Write("Done By :");
+	  Write(r4);
 	 glRasterPos2f(90, -100);
-    Write("GREESHMA R");
-	 glRasterPos2f(90, -115);
-    Write("MEGHNA NATRAJ");
-	 glRasterPos2f(90, -130);
-    Write("VARSHA CHANDAN");
+    Write(r5);
 
 
     
@@ -192,19 +195,26 @@ void Finish()
 
    glColor3f(0.30,0.30,1.00);
     glRasterPos2f(20,60);
-	BigWrite("GAME OVER");
+    char gameover[] = "GAME OVER";
+	BigWrite(gameover);
 
     glColor3f(0.329412,0.329412,0.329412);
     glRasterPos2f(-60,20);
     pos=CheckGrid();
+
+
+    char l1[] =  "You LOST!! Try not falling into the PIT again !!";
+    char l2[] =  "You LOST!! You were eaten up by the evil WUMPUS! ";
+
     
     if(won==true)
 	{
           glRasterPos2f(-10,20);
-		  BigWrite("You WON!! Congratulations.");
+          char wow[] = "You WON!! Congratulations.";
+		  BigWrite(wow);
 	}
-	else if(pos==3||pos==11) BigWrite("You LOST!! Try not falling into the PIT again !!");
-	else BigWrite("You LOST!! You were eaten up by the evil WUMPUS! ");
+	else if(pos==3||pos==11) BigWrite(l1);
+	else BigWrite(l2);
     
     glRasterPos2f(20, -10);
     sprintf(tmp_str, "Moves : %d ",moves);
@@ -212,35 +222,46 @@ void Finish()
 
     glColor3f(0.90,0.90,0.90);
     glRasterPos2f(-30, -50);
-    BigWrite("To start playing again please press 's'.");
+    char playagain[] = "To start playing again please press 's'.";
+    BigWrite(playagain);
 
 }
 void Rules()
 {
 	
+  char r1[] = "RULES OF THE GAME";
+  char r2[] = "1.The WUMPUS WORLD is a cave consisting of rooms connected by passageways.";
+  char r3[] = "2.Lurking somewhere in the cave is WUMPUS who eats anyone who enters its room.";
+  char r4[] = "If there is a WUMPUS in the adjacent room , the player senses STENCH (Yellow).";
+  char r5[] = "3.Some rooms contain bottomless PITS which will trap anyone who wanders into it.";
+  char r6[] = "If there is a PIT in the adjacent room , the player senses BREEZE (Blue).";
+  char r7[] = "GOAL";
+  char r8[] = "The player must find his/her way to find the precious HEAP OF GOLD hidden in a room.";
+  char r9[] = "PRESS 'p' TO PLAY.";
+
 	glTranslatef (-60.0, 40.0, zoom);
     glColor3f(0.30,0.30,1.00);
     glRasterPos2f(0, 70);
-    BigWrite("RULES OF THE GAME");
+    BigWrite(r1);
 
     glColor3f(0.329412,0.329412,0.329412);
     glRasterPos2f(-120, 40);
-    Write("1.The WUMPUS WORLD is a cave consisting of rooms connected by passageways.");
+    Write(r2);
     glRasterPos2f(-120, 20);
-    Write("2.Lurking somewhere in the cave is WUMPUS who eats anyone who enters its room.");
+    Write(r3);
 	glRasterPos2f(-110, 5);
-    Write("If there is a WUMPUS in the adjacent room , the player senses STENCH (Yellow).");
+    Write(r4);
 	glRasterPos2f(-120, -20);
-    Write("3.Some rooms contain bottomless PITS which will trap anyone who wanders into it.");
+    Write(r5);
     glRasterPos2f(-110, -35);
-    Write("If there is a PIT in the adjacent room , the player senses BREEZE (Blue).");
+    Write(r6);
     glRasterPos2f(40, -70);
-	BigWrite("GOAL");
+	BigWrite(r7);
 	  glRasterPos2f(-120, -90);
-	Write("The player must find his/her way to find the precious HEAP OF GOLD hidden in a room.");
+	Write(r8);
     	glColor3f(0.62352,0.372549,0.623529);
 	glRasterPos2f(20, -120);
-    Write("PRESS 'p' TO PLAY.");
+    Write(r9);
 
 }
 void DrawItems()
@@ -477,7 +498,8 @@ void GameStatus()
     char tmp_str[40];
 	glColor3f(1.0, 1.0, 1.0);
     glRasterPos2f(-10,-8);
-    Write("START");
+    char start[] = "START";
+    Write(start);
 
     //Print the status of the game on the screen
     glColor3f(0.0, 0.0, 1.0);
@@ -534,7 +556,7 @@ void Display(void)
 	else if(start==false)
 	{
 		    glTranslatef (-60.0, 40.0, zoom);
-		    _sleep(2000);
+		    usleep(2000);
 			Finish();
 	  } 	
         
